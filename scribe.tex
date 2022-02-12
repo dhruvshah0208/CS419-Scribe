@@ -1,0 +1,132 @@
+
+\documentclass[twoside]{article}
+\usepackage{graphics}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf CS 419 : Introduction to Machine Learning
+                        \hfill Spring 2022} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribe: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+         \vspace{#2}
+         \begin{center}
+         Figure \thelecnum.#1:~#3
+         \end{center}
+   }
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+\lecture{8}{February 9}{Abir De}{Dhruv Shah}
+
+\section{Multi-Class Classification}
+Let $y = $ {1,2,...,k} be the labels of each class. Then using the probabilistic approach is easier as compared to using SVM. One would have, \\
+$$P(y = i) = p_i = f({w_i}^T x) = \frac{e^{{w_i}^T x}}{\sum_k e^{{w_k}^T x}}$$
+
+Now in the binary case we would have,\\
+$$P(y = 1) = \frac{1}{1 + e^{-{w_1}^T x}} $$
+$$P(y = -1) = \frac{1}{1 + e^{-{w_{-1}}^T x}} $$
+Now as $P(y = 1) + P(y = -1) = 1$ we would have ${w_1}^T x = -{w_{-1}}^T x$\\
+Hence in the binary case we model y as
+$$ P(y|x) = \frac{1}{1 + e^{-w^Txy}} $$
+
+\section{Stability of Classifiers}
+Let $A$ be an algorithm which outputs a vector. Let $S$ be the data set which would be the input for the algorithm. Then, $A(S)$ is called stable if
+$$||A(S) - A(S')|| = O(\frac{1}{|S|}) $$
+where $S'$ is the same data set $S$ with only one element changed, which means that $|S| = |S'|$.\\
+
+Now, if we use $y = w^Tx + b$ as a classifier then we can see that by changing a point in the data set such that it no longer belongs to the convex hull of the remaining points, the classifier has a finite drift. This would mean that $y = w^Tx + b$ is not a stable classifier. This would pose the following problems\\
+\begin{itemize}
+  \item Not robust to outliers
+  \item Generalisation Issues
+  \item Privacy Issues
+\end{itemize}
+\newpage
+\lecture{8}{February 9}{Abir De}{Dhruv Shah}
+
+Instability of the classifier can cause privacy issues because, by changing a single entry in the data set and observing the new and old model learned by the system, one could reverse engineer the new entry in the data set and hence breach the privacy.\\
+
+We also observe the following points:\\
+If $b \neq 0$
+\begin{itemize}
+    \item Improves training accuracy
+    \item Not necessarily improves test accuracy
+\end{itemize}
+If $b = 0$
+\begin{itemize}
+    \item Does not improve training accuracy
+    \item may improve test accuracy
+    \item will be stable with regularizers
+\end{itemize}
+
+
+\end{document}
+
+
+
+
+
